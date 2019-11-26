@@ -17,16 +17,25 @@ public class TelaUsuario extends javax.swing.JFrame {
 
     Usuario usuario = new Usuario();
     UsuarioDAO dao = new UsuarioDAO();
-           
+
     public TelaUsuario() {
         initComponents();
     }
-public void limparCampos(){
-    usuario = new Usuario();
-    tfNome.setText("");
-    tfUsuario.setText("");
-    tfSenha.setText("");
-}
+
+    public void limparCampos() {
+        usuario = new Usuario();
+        tfNome.setText("");
+        tfUsuario.setText("");
+        tfSenha.setText("");
+
+    }
+
+    public void atualizarCamposConsulta() {
+        tfUsuario.setText(usuario.getLogin());
+        tfSenha.setText(usuario.getSenha());
+        tfNome.setText(usuario.getNomeUsuario());
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,6 +95,11 @@ public void limparCampos(){
         });
 
         jButton2.setText("Pesquisar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Voltar");
 
@@ -177,18 +191,34 @@ public void limparCampos(){
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(tfNome.getText().isEmpty() || tfSenha.getText().isEmpty()|| tfUsuario.getText().isEmpty()){ 
+        if (tfNome.getText().isEmpty() || tfSenha.getText().isEmpty() || tfUsuario.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos");
-    }else{
+        } else {
             usuario.setNomeUsuario(tfNome.getText());
             usuario.setLogin(tfUsuario.getText());
             usuario.setSenha(tfSenha.getText());
+            if (usuario.getIdUsuario()!= 0){
+            dao.equals(usuario);
+            JOptionPane.showMessageDialog(null, "Usuario editado com sucesso");
+            }else {
+                   dao.salvar(usuario);
+                   JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso");
+            }
+            JOptionPane.showMessageDialog(null, "existe campos obrigatorios que voce não preencheu ");
+            dispose();
             dao.salvar(usuario);
             limparCampos();
+        
         }
     
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        TelaUsuario consultar = new TelaUsuario();
+        consultar.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
